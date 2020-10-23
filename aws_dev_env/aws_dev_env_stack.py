@@ -1,9 +1,27 @@
-from aws_cdk import core
+import yaml
+from aws_cdk import (
+    core
+)
 
+from core.networking import Network
+from jenkins.jenkins import Jenkins
 
 class AwsDevEnvStack(core.Stack):
 
-    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+    def __init__(self, scope: core.Construct, id: str, config: dict, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # The code that defines your stack goes here
+        network = Network(
+            self,
+            "VPC"
+        )
+
+        jenkins = Jenkins(
+            self,
+            "Jenkins",
+            network.vpc,
+            config
+        )
+
+
+

@@ -1,0 +1,9 @@
+environment: dev
+stack_name: alvinator
+
+core:
+    region: ap-northeast-1
+
+jenkins:
+    ami_id: ami-0db8a3e80938a5195
+    instance_type: t2.medium
