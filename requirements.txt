@@ -23,7 +23,6 @@ aws-cdk.cloud-assembly-schema==1.69.0
 aws-cdk.core==1.69.0
 aws-cdk.cx-api==1.69.0
 aws-cdk.region-info==1.69.0
-aws-dev-env==0.0.1
 cattrs==1.0.0
 constructs==3.0.27
 jsii==1.13.0
