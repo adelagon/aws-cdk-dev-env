@@ -5,6 +5,7 @@ from aws_cdk import (
 
 from core.networking import Network
 from jenkins.jenkins import Jenkins
+from cloud_ide.cloud_ide import CloudIDE
 
 class AwsDevEnvStack(core.Stack):
 
@@ -16,12 +17,21 @@ class AwsDevEnvStack(core.Stack):
             "VPC"
         )
 
-        jenkins = Jenkins(
-            self,
-            "Jenkins",
-            network.vpc,
-            config
-        )
+        if config["cloud_ide"]["enabled"]:
+            ide = CloudIDE(
+                self,
+                "CloudIDE",
+                network.vpc,
+                config
+            )
+
+        if config["jenkins"]["enabled"]:
+            jenkins = Jenkins(
+                self,
+                "Jenkins",
+                network.vpc,
+                config
+            )
 
 
 
