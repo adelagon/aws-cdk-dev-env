@@ -11,8 +11,8 @@ jenkins:
 
 cloud_ide:
     enabled: True
-    ami_id: ami-0ee5817af0936cba6
-    instance_type: t2.medium
+    ami_id: ami-0347e76f354b07a69
+    instance_type: m6g.large
     iam_role_policies: [
         "service-role/AmazonEC2RoleforSSM",
         "PowerUserAccess"
