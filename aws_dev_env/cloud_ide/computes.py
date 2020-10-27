@@ -59,3 +59,8 @@ class Computes(core.Construct):
             peer,
             ec2.Port.tcp(8080)
         )
+
+    def set_code_server_password(self, password):
+        self._instance.add_user_data(
+            "sed -i 's/<CODESERVERPASSWD>/{}/' /lib/systemd/system/code-server.service".format(password)
+        )

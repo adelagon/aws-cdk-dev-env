@@ -6,7 +6,6 @@ from aws_cdk import (
 from cloud_ide.computes import Computes
 from cloud_ide.certificates import Certificate
 from cloud_ide.load_balancers import LoadBalancers
-from cloud_ide.secrets import Secrets
 
 dirname = os.path.dirname(__file__)
 
@@ -14,12 +13,6 @@ class CloudIDE(core.Construct):
 
     def __init__(self, scope: core.Construct, id: str, vpc: ec2.IVpc, config: dict, **kwargs):
         super().__init__(scope, id, **kwargs)
-
-        secrets = Secrets(
-            self,
-            "Secrets",
-            config["cloud_ide"]
-        )
 
         computes = Computes(
             self,
@@ -43,5 +36,5 @@ class CloudIDE(core.Construct):
             certificate.arn
         )
 
-        secrets.grant_read(computes.role)
         computes.add_ingress(load_balancers.public_load_balancer_security_group)
+        computes.set_code_server_password(config["cloud_ide"]["code_server_password"])

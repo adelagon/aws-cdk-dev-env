@@ -15,7 +15,8 @@ class Secrets(core.Construct):
         self._code_server_password = ssm.StringParameter(
             self,
             "CodeServerPassword",
-            string_value=config["code_server_password"]
+            parameter_name=config["code_server_auth_key"],
+            string_value=config["code_server_auth_val"]
         )
 
     def grant_read(self, role):

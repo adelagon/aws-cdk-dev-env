@@ -11,11 +11,11 @@ jenkins:
 
 cloud_ide:
     enabled: True
-    ami_id: ami-0347e76f354b07a69
+    ami_id: ami-06568438f0b180006
     instance_type: m6g.large
     iam_role_policies: [
         "service-role/AmazonEC2RoleforSSM",
-        "PowerUserAccess"
+        "AdministratorAccess"
     ]
-    domain_name: "*.example.com"
-    code_server_password: "set_your_password_here"
+    domain_name: "*.adelagon.com"
+    code_server_password: "<Your Password Here>"
