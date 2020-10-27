@@ -14,7 +14,8 @@ class LoadBalancers(core.Construct):
         super().__init__(scope, id, **kwargs)
 
         health_check = elbv2.HealthCheck(
-            path="/"
+            path="/",
+            healthy_http_codes="200-399"
         )
 
         public_target_group = elbv2.ApplicationTargetGroup(
