@@ -17,5 +17,5 @@ cloud_ide:
         "service-role/AmazonEC2RoleforSSM",
         "PowerUserAccess"
     ]
-    domain_name: "*.adelagon.com"
-    
+    domain_name: "*.example.com"
+    code_server_password: "set_your_password_here"

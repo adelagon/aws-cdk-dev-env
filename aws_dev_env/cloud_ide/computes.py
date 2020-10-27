@@ -18,6 +18,10 @@ class Computes(core.Construct):
     def forwarder(self):
         return self._webhook_forwarder
 
+    @property
+    def role(self):
+        return self._role
+
     def __init__(self, scope: core.Construct, id: str, vpc: ec2.IVpc, config: dict, region: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
@@ -28,9 +32,9 @@ class Computes(core.Construct):
             },
         )
 
-        role = iam.Role(self, "InstanceRole", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
+        self._role = iam.Role(self, "InstanceRole", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
         for policy in config["iam_role_policies"]:
-            role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name(policy))
+            self._role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name(policy))
 
         subnet = vpc.select_subnets(subnet_type=ec2.SubnetType.PRIVATE).subnets[0]
         subnet_selection = ec2.SubnetSelection(subnets=[subnet])
@@ -46,7 +50,7 @@ class Computes(core.Construct):
             machine_image=image,
             vpc=vpc,
             vpc_subnets=subnet_selection,
-            role=role,
+            role=self._role,
             security_group=self.security_group
         )
     
