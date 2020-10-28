@@ -61,6 +61,8 @@ class Computes(core.Construct):
         )
 
     def set_code_server_password(self, password):
+        # TODO: Add reboot here
+        # TODO: Probably it is best to use AWS Secrets Manager here
         self._instance.add_user_data(
             "sed -i 's/<CODESERVERPASSWD>/{}/' /lib/systemd/system/code-server.service".format(password)
         )

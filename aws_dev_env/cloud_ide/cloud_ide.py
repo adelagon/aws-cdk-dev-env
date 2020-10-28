@@ -12,6 +12,7 @@ dirname = os.path.dirname(__file__)
 class CloudIDE(core.Construct):
 
     def __init__(self, scope: core.Construct, id: str, vpc: ec2.IVpc, config: dict, **kwargs):
+        # TODO: Add a better persistence store here EFS or S3 sync
         super().__init__(scope, id, **kwargs)
 
         computes = Computes(
