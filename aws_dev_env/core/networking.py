@@ -11,11 +11,14 @@ class Network(core.Construct):
 
     @property
     def public_subnets(self):
-        return self._public_subnets
+        subnets = self._vpc.select_subnets(subnet_type=ec2.SubnetType.PUBLIC).subnets
+        return ec2.SubnetSelection(subnets=subnets)
+
 
     @property
     def private_subnets(self):
-        return self._private_subnets
+        subnets = self._vpc.select_subnets(subnet_type=ec2.SubnetType.PRIVATE).subnets
+        return ec2.SubnetSelection(subnets=subnets)
 
     def __init__(self, scope: core.Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)

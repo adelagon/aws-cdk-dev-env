@@ -25,6 +25,8 @@ class Computes(core.Construct):
     def __init__(self, scope: core.Construct, id: str, vpc: ec2.IVpc, config: dict, region: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
+        self._region = region
+
         ### EC2 Server for Jenkins
         image = ec2.GenericLinuxImage(
             {
@@ -60,9 +62,31 @@ class Computes(core.Construct):
             ec2.Port.tcp(8080)
         )
 
+    def set_updates_on(self):
+        self._instance.add_user_data(
+            "yum check-update -y",
+            "yum upgrade -y",
+        )
+
+    def set_efs_mount(self, efs, mount_point):
+        self._instance.add_user_data(
+            "yum install -y amazon-efs-utils",
+            "yum install -y nfs-utils",
+            "mkdir -p {}".format(mount_point),
+            "test -f /sbin/mount.efs && echo {}: {} efs defaults,_netdev  >> /etc/fstab || ".format(efs.file_system_id, mount_point),
+            "echo {}.efs.{}.amazonaws.com:/ {} nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0 >> /etc/fstab".format(
+                efs.file_system_id,
+                self._region,
+                mount_point)
+        )
+        
     def set_code_server_password(self, password):
-        # TODO: Add reboot here
         # TODO: Probably it is best to use AWS Secrets Manager here
         self._instance.add_user_data(
-            "sed -i 's/<CODESERVERPASSWD>/{}/' /lib/systemd/system/code-server.service".format(password)
+            "sed -i 's/<CODESERVERPASSWD>/{}/' /lib/systemd/system/code-server.service".format(password),
+        )
+
+    def set_reboot(self):
+        self._instance.add_user_data(
+            "reboot",
         )
