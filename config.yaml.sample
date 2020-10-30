@@ -11,11 +11,14 @@ jenkins:
 
 cloud_ide:
     enabled: True
-    ami_id: ami-06568438f0b180006
+    ami_id: ami-0a3db6afbe21a4d5b
     instance_type: m6g.large
     iam_role_policies: [
         "service-role/AmazonEC2RoleforSSM",
         "AdministratorAccess"
     ]
     domain_name: "*.adelagon.com"
-    code_server_password: "<Your Password Here>"
+    code_server_password: "<Set you code-server password here>"
+    update_on_create: True
+    reboot_on_create: True
+    efs_mount_point: "/mnt/efs/shared"

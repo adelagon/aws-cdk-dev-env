@@ -55,6 +55,8 @@ class Computes(core.Construct):
             role=self._role,
             security_group=self.security_group
         )
+
+        core.CfnOutput(self, "CodeServerInstanceID", value=self._instance.instance_id)
     
     def add_ingress(self, peer):
         self.security_group.add_ingress_rule(
