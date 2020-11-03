@@ -3,6 +3,10 @@ stack_name: alvinator
 
 core:
     region: ap-northeast-1
+    persistence:
+        efs:
+            enabled: True
+            lifecycle_policy: AFTER_7_DAYS
 
 jenkins:
     enabled: False

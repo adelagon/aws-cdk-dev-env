@@ -22,7 +22,8 @@ class AwsDevEnvStack(core.Stack):
             self,
             "SharedDisk",
             network.vpc,
-            network.private_subnets
+            network.private_subnets,
+            config["core"]["persistence"]
         )
 
         if config["cloud_ide"]["enabled"]:
