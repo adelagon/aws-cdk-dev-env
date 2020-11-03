@@ -25,6 +25,7 @@ class SharedDisk(core.Construct):
                 throughput_mode=efs.ThroughputMode.BURSTING,
                 lifecycle_policy=getattr(efs.LifecyclePolicy, config["efs"]["lifecycle_policy"])
             )
+            core.CfnOutput(self, "EFS_FSID", value=self._fs.file_system_id)
 
     def allow_connection(self, resource):
         self._fs.connections.allow_default_port_from(resource)

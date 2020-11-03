@@ -56,4 +56,4 @@ class LoadBalancers(core.Construct):
             port=443,
             default_target_groups=[public_target_group])
 
-        core.CfnOutput(self, "CloudIDE URL", value=self._public_lb.load_balancer_dns_name)
+        core.CfnOutput(self, "CloudIDE URL", value="https://{}".format(self._public_lb.load_balancer_dns_name))
