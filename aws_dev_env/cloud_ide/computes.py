@@ -8,7 +8,7 @@ from aws_cdk import (
 
 dirname = os.path.dirname(__file__)
 
-class Computes(core.Construct):
+class EC2(core.Construct):
 
     @property
     def instance(self):
@@ -101,4 +101,36 @@ class Computes(core.Construct):
     def set_reboot(self):
         self._instance.add_user_data(
             "reboot",
+        )
+
+class InstanceScheduler(core.Construct):
+    @property
+    def function(self):
+        return self._function
+
+    def __init__(self, scope: core.Construct, id: str, instance: ec2.IInstance, **kwargs):
+        super().__init__(scope, id, **kwargs)
+
+        ec2_policy = iam.PolicyStatement(
+            effect=iam.Effect.ALLOW,
+            actions=[
+                "ec2:Start*",
+                "ec2:Stop*"
+            ],
+            resources=["*"]
+        )
+
+        self._function = _lambda.Function(
+            self,
+            "InstanceSchedulerFunction",
+            runtime=_lambda.Runtime.PYTHON_3_8,
+            code=_lambda.Code.asset(os.path.join(
+                dirname, "lambda")),
+            handler="instance_scheduler.lambda_handler",
+        )
+
+        self._function.add_to_role_policy(ec2_policy)
+        self._function.add_environment(
+            "InstanceID",
+            instance.instance_id
         )

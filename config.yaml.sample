@@ -27,3 +27,10 @@ cloud_ide:
     update_on_create: True
     reboot_on_create: True
     efs_mount_point: "/mnt/efs/shared"
+    schedule_on: [
+        "cron(0 0 ? * MON-FRI *)",
+    ]
+    schedule_off: [
+        "cron(0 12 ? * MON-FRI *)",
+        "cron(0 16 ? * FRI-SAT *)"
+    ]
