@@ -17,6 +17,7 @@ cloud_ide:
     enabled: True
     ami_id: ami-0a3db6afbe21a4d5b
     instance_type: m6g.large
+    enable_code_server: True
     iam_role_policies: [
         "service-role/AmazonEC2RoleforSSM",
         "AdministratorAccess"

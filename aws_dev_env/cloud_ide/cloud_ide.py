@@ -27,22 +27,26 @@ class CloudIDE(core.Construct):
             config["core"]["region"]
         )
 
-        certificate = Certificate(
-            self,
-            "Certificate",
-            config["cloud_ide"]["domain_name"]
-        )
+        if config["cloud_ide"]["enable_code_server"]:
+            certificate = Certificate(
+                self,
+                "Certificate",
+                config["cloud_ide"]["domain_name"]
+            )
 
-        load_balancers = LoadBalancers(
-            self,
-            "LoadBalancers",
-            vpc,
-            [self._computes.instance],
-            certificate.arn
-        )
+            load_balancers = LoadBalancers(
+                self,
+                "LoadBalancers",
+                vpc,
+                [self._computes.instance],
+                certificate.arn
+            )
 
-        self._computes.add_ingress(load_balancers.public_load_balancer_security_group)
-        self._computes.set_code_server_password(config["cloud_ide"]["code_server_password"])
+            self._computes.add_ingress(load_balancers.public_load_balancer_security_group)
+            self._computes.set_code_server_password(config["cloud_ide"]["code_server_password"])
+            self._computes.enable_code_server()
+        else:
+            self._computes.disable_code_server()
 
     def set_user_data(self, updates=False, efs=False, mount_point=None, reboot=False):
         if updates:

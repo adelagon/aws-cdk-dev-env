@@ -88,6 +88,16 @@ class Computes(core.Construct):
             "sed -i 's/<CODESERVERPASSWD>/{}/' /lib/systemd/system/code-server.service".format(password),
         )
 
+    def enable_code_server(self):
+        self._instance.add_user_data(
+            "systemctl enable code-server"
+        )
+
+    def disable_code_server(self):
+        self._instance.add_user_data(
+            "systemctl disable code-server"
+        )
+
     def set_reboot(self):
         self._instance.add_user_data(
             "reboot",
